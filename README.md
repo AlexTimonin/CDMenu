@@ -5,7 +5,7 @@ Customizable Dialog Menu for Android.
 
 *> TODO: Add logo/screenshots.*
 
-*Project will be developed using Document Driven Development. You can read the [documentation here](wiki) before use this control.*
+*Project will be developed using Document Driven Development. You can read the [documentation here](https://github.com/BeKitzur/CDMenu/wiki) before use this control.*
 
 Installation
 ============
