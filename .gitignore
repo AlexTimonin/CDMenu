@@ -18,3 +18,30 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Mac OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Thumbnails
+._*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
