@@ -1,5 +1,6 @@
 package com.bekitzur.cdmenu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.Menu;
 
 /**
  * Customizable Dialog Menu for Android
@@ -19,6 +21,7 @@ public class CDMenu {
     private StyleListener styleListener;
     private int listItemLayoutId, listItemTextViewId;
     private AdapterView.OnItemClickListener onItemClickListener;
+    private Menu menu;
 
     /**
      * Creates new {@link CDMenu}
@@ -32,6 +35,30 @@ public class CDMenu {
         CDMenu cDMenu = new CDMenu();
         cDMenu.context = context;
         return cDMenu;
+    }
+
+    /**
+     * Set android menu resource which defines menu structure
+     * @param menuResourceId Android menu resource id
+     * @return CDMenu
+     */
+    public CDMenu setData(int menuResourceId) {
+        try {
+            ((Activity)context).getMenuInflater().inflate(menuResourceId, menu);
+        } catch (InflateException e) {
+            throw new IllegalArgumentException("menuResourceId has to be a valid menu resource ID");
+        }
+        return this;
+    }
+
+    /**
+     * Set instance of Menu class to define menu structure
+     * @param menu Instance of Menu class to define menu structure
+     * @return CDMenu
+     */
+    public CDMenu setData(Menu menu) {
+        this.menu = menu;
+        return this;
     }
 
     /**
