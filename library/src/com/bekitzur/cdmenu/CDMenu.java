@@ -1,6 +1,8 @@
 package com.bekitzur.cdmenu;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.Menu;
 
 /**
  * Customizable Dialog Menu for Android
@@ -9,6 +11,7 @@ import android.content.Context;
 public class CDMenu {
 
     private Context context;
+    private Menu menu;
 
     /**
      * Creates new CDMenu
@@ -24,4 +27,25 @@ public class CDMenu {
         cDMenu.context = context;
         return cDMenu;
     }
+
+    /**
+     * Set android menu resource which defines menu structure
+     * @param menuResourceId Android menu resource id
+     * @return CDMenu
+     */
+    public CDMenu setData(int menuResourceId) {
+        ((Activity)context).getMenuInflater().inflate(menuResourceId, menu);
+        return this;
+    }
+
+    /**
+     * Set instance of Menu class to define menu structure
+     * @param menu Instance of Menu class to define menu structure
+     * @return CDMenu
+     */
+    public CDMenu setData(Menu menu) {
+        this.menu = menu;
+        return this;
+    }
+
 }
