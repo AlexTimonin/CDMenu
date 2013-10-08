@@ -2,6 +2,7 @@ package com.bekitzur.cdmenu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.InflateException;
 import android.view.Menu;
 
 /**
@@ -34,7 +35,11 @@ public class CDMenu {
      * @return CDMenu
      */
     public CDMenu setData(int menuResourceId) {
-        ((Activity)context).getMenuInflater().inflate(menuResourceId, menu);
+        try {
+            ((Activity)context).getMenuInflater().inflate(menuResourceId, menu);
+        } catch (InflateException e) {
+            throw new IllegalArgumentException("menuResourceId has to be a valid menu resource ID");
+        }
         return this;
     }
 
