@@ -81,7 +81,7 @@ public class CDMenu {
             throw new IllegalArgumentException("layoutId has to represent a ViewGroup object");
         }
         if (!(testViewGroup.findViewById(textViewId) instanceof TextView)) {
-            throw new IllegalArgumentException("textViewId has to represent a ListView object");
+            throw new IllegalArgumentException("textViewId has to represent a TextView object");
         }
 
         this.listItemLayoutId = layoutId;
