@@ -21,14 +21,13 @@ public class CDMenu {
     private AdapterView.OnItemClickListener onItemClickListener;
 
     /**
-     * Creates new CDMenu
-     * @param context context which CDMenu will use to show itself
-     * @return newly created CDMenu
-     * @throws IllegalArgumentException on context == 'null'
+     * Creates new {@link CDMenu}
+     * @param context a {@link Context} that will be used by {@link CDMenu} to show itself. On <code>null</code> context {@link IllegalArgumentException} will be thrown
+     * @return newly created {@link CDMenu}
      */
     public static CDMenu createDialogMenu(Context context) {
         if (context == null) {
-            throw new IllegalArgumentException("Null context where passed into createDialogMenu method");
+            throw new IllegalArgumentException("Context is null");
         }
         CDMenu cDMenu = new CDMenu();
         cDMenu.context = context;
