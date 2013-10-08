@@ -11,8 +11,21 @@ import android.widget.TextView;
 import android.view.Menu;
 
 /**
- * Customizable Dialog Menu for Android
- *    https://github.com/BeKitzur/CDMenu
+ * Customizable Dialog Menu for Android <a href="https://github.com/BeKitzur/CDMenu">https://github.com/BeKitzur/CDMenu</a>
+ *
+ * Example of simple usage:
+ * <pre>
+ * CDMenu.createDialogMenu(context)
+ *     .setData(R.menu.main_menu)
+ *     .setOnItemClickListener(this)
+ *     .show();
+ * <pre/>
+ *
+ * Customization can be performed using following methods:
+ * <pre>
+ * - setCustomListView(ListView or R.layout.your_list_view)
+ * - setCustomListItem(R.layout.your_item_layout, R.id.your_text_view_id, StyleListener)
+ * </pre>
  */
 public class CDMenu {
 
