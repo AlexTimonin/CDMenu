@@ -46,7 +46,7 @@ public class CDMenuListAdapter extends BaseAdapter {
         View view = convertView == null ? ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(listItemLayoutId, null) : convertView;
         ((TextView)view.findViewById(listItemTextViewId)).setText(menu.getItem(position).getTitle());
         if (styleListener != null) {
-            styleListener.onStyleChangeRequested(view, position);
+            view = styleListener.onStyleChangeRequested(view, position);
         }
         return view;
     }
