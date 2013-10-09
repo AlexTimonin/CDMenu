@@ -1,11 +1,11 @@
 package com.bekitzur.cdmenu;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.view.InflateException;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.ViewGroup;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,7 +29,7 @@ import java.lang.reflect.Constructor;
  * - setCustomListItem(R.layout.your_item_layout, R.id.your_text_view_id, StyleListener)
  * </pre>
  */
-public class CDMenu {
+public class CDMenu implements AdapterView.OnItemClickListener {
 
     private Context context;
     private ListView listView;
@@ -37,6 +37,7 @@ public class CDMenu {
     private int listItemLayoutId, listItemTextViewId;
     private AdapterView.OnItemClickListener onItemClickListener;
     private Menu menu;
+    private Dialog dialog;
 
     /**
      * Creates new {@link CDMenu}
@@ -59,6 +60,7 @@ public class CDMenu {
      */
     public CDMenu setData(int menuResourceId) {
         try {
+            menu = newMenuInstance(context);
             ((Activity)context).getMenuInflater().inflate(menuResourceId, menu);
         } catch (InflateException e) {
             throw new IllegalArgumentException("menuResourceId has to be a valid menu resource ID");
@@ -153,5 +155,48 @@ public class CDMenu {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void show() {
+        if (listView == null) {
+            setDefaultListView();
+        }
+        if (listItemLayoutId == 0) {
+            listItemLayoutId = R.layout.default_list_item;
+            listItemTextViewId = R.id.defaultListItemTextView;
+        }
+        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
+        listView.setCacheColorHint(0);
+        listView.setOnItemClickListener(this);
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(listView);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+    private void setDefaultListView() {
+        listView = new ListView(context);
+        listView.setBackgroundColor(Color.WHITE);
+        listView.setDivider(new ColorDrawable(Color.LTGRAY));
+        listView.setDividerHeight(1);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        if(menu.getItem(position).hasSubMenu()) {
+            goToSubMenu(menu.getItem(position).getSubMenu());
+            return;
+        }
+
+        if (onItemClickListener != null){
+            onItemClickListener.onItemClick(adapterView, view, position, l);
+        }
+        dialog.dismiss();
+    }
+
+    private void goToSubMenu(Menu subMenu) {
+        menu = subMenu;
+        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
     }
 }

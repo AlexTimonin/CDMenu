@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 /**
@@ -44,6 +45,9 @@ public class CDMenuListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         View view = convertView == null ? ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(listItemLayoutId, null) : convertView;
+        View emptyMockView = new View(context);
+        emptyMockView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0));
+        ((ViewGroup)view).addView(emptyMockView);
         ((TextView)view.findViewById(listItemTextViewId)).setText(menu.getItem(position).getTitle());
         if (styleListener != null) {
             view = styleListener.onStyleChangeRequested(view, position);
