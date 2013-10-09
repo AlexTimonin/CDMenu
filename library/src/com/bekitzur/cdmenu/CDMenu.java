@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.view.Menu;
+
+import java.lang.reflect.Constructor;
 
 /**
  * Customizable Dialog Menu for Android <a href="https://github.com/BeKitzur/CDMenu">https://github.com/BeKitzur/CDMenu</a>
@@ -140,5 +142,16 @@ public class CDMenu {
         }
         this.onItemClickListener = onItemClickListener;
         return this;
+    }
+
+    private Menu newMenuInstance(Context context) {
+        try {
+            Class<?> menuBuilderClass = Class.forName("com.android.internal.view.menu.MenuBuilder");
+            Constructor<?> constructor = menuBuilderClass.getDeclaredConstructor(Context.class);
+            return (Menu)constructor.newInstance(context);
+        } catch (Exception e) {e
+                .printStackTrace();
+        }
+        return null;
     }
 }
