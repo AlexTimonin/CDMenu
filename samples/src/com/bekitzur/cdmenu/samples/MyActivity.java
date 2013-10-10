@@ -106,7 +106,7 @@ public class MyActivity extends ListActivity implements AdapterView.OnItemClickL
         @Override
         public View onStyleChangeRequested(View listItemView, int position) {
             ((ImageView)listItemView.findViewById(R.id.customListItemImageView)).setImageResource(position % 2 == 0 ? R.drawable.star : R.drawable.star2);
-            ((TextView)listItemView.findViewById(R.id.customListItemSubTextView)).setText("Description " + position);
+            ((TextView)listItemView.findViewById(R.id.customListItemSubTextView)).setText("Description " + (position + 1));
             return listItemView;
         }
     };
