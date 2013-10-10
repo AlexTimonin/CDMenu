@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/listMarginLeft"
+    android:paddingTop="@dimen/listMarginTopBottom"
+    android:paddingBottom="@dimen/listMarginTopBottom"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/defaultListItemTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/listTextSize"
+        android:textColor="@android:color/black"/>
+
+</LinearLayout>
+

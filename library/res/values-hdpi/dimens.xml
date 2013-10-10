@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="listTextSize">18sp</dimen>
+    <dimen name="listMarginTopBottom">12dp</dimen>
+    <dimen name="listMarginLeft">10dp</dimen>
+</resources>

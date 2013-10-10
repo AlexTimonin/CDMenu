@@ -1,11 +1,11 @@
 package com.bekitzur.cdmenu;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.view.InflateException;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.ViewGroup;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,7 +29,10 @@ import java.lang.reflect.Constructor;
  * - setCustomListItem(R.layout.your_item_layout, R.id.your_text_view_id, StyleListener)
  * </pre>
  */
-public class CDMenu {
+public class CDMenu implements AdapterView.OnItemClickListener {
+
+    final int defaultListItemId = R.layout.default_list_item;
+    final int defaultListItemTextViewId = R.id.defaultListItemTextView;
 
     private Context context;
     private ListView listView;
@@ -37,6 +40,7 @@ public class CDMenu {
     private int listItemLayoutId, listItemTextViewId;
     private AdapterView.OnItemClickListener onItemClickListener;
     private Menu menu;
+    private Dialog dialog;
 
     /**
      * Creates new {@link CDMenu}
@@ -53,12 +57,13 @@ public class CDMenu {
     }
 
     /**
-     * Set android menu resource which defines menu structure
+     * Sets android menu resource which defines menu structure
      * @param menuResourceId Android menu resource id
      * @return CDMenu
      */
     public CDMenu setData(int menuResourceId) {
         try {
+            menu = newMenuInstance(context);
             ((Activity)context).getMenuInflater().inflate(menuResourceId, menu);
         } catch (InflateException e) {
             throw new IllegalArgumentException("menuResourceId has to be a valid menu resource ID");
@@ -67,7 +72,7 @@ public class CDMenu {
     }
 
     /**
-     * Set instance of Menu class to define menu structure
+     * Sets instance of Menu class to define menu structure
      * @param menu Instance of Menu class to define menu structure
      * @return CDMenu
      */
@@ -77,7 +82,7 @@ public class CDMenu {
     }
 
     /**
-     * Set a custom {@link android.widget.ListView} instead of the default one.
+     * Sets a custom {@link android.widget.ListView} instead of the default one.
      * @param layoutId resource Id of a layout xml file to be used as a ListView for the menu. If you pass <b>null</b>, or if <b>layoutId</b> doesn't match a {@link android.widget.ListView} object, {@link IllegalArgumentException} will be thrown.
      * @return {@link CDMenu} with a custom listView
      */
@@ -93,7 +98,7 @@ public class CDMenu {
     }
 
     /**
-     * Set a custom {@link ListView} instead of the default one.
+     * Sets a custom {@link ListView} instead of the default one.
      * @param listView a {@link ListView} object to be used as a ListView for the menu. Passing <b>null</b> causes {@link IllegalArgumentException} to be thrown.
      * @return {@link CDMenu} with a custom listView
      */
@@ -106,7 +111,7 @@ public class CDMenu {
     }
 
     /**
-     * Set a custom list item instead of the default one.
+     * Sets a custom list item instead of the default one.
      * @param layoutId resource Id of a layout xml file to be used as a list item instead of the default one. If you pass <b>null</b>, or if layoutId doesn't match a ViewGroup object, {@link IllegalArgumentException} will be thrown.
      * @param textViewId id of the {@link android.widget.TextView} that will contain the menu item name. If you pass <b>null</b>, or textViewId doesn't match a {@link android.widget.TextView} that is contained in layoutId, {@link IllegalArgumentException} will be thrown.
      * @param styleListener a listener that handles the custom list item's inner views' manual updating. Pass <b>null</b> if you don't need anything other than items' text to be updated.
@@ -132,7 +137,7 @@ public class CDMenu {
     }
 
     /**
-     * Set a listener to respond to menu clicks.
+     * Sets a listener to respond to menu clicks.
      * @param onItemClickListener an object that implements {@link android.widget.AdapterView.OnItemClickListener} interface. If you pass <b>null</b>, {@link IllegalArgumentException} will be thrown.
      * @return {@link CDMenu} with an attached {@link android.widget.AdapterView.OnItemClickListener}
      */
@@ -153,5 +158,63 @@ public class CDMenu {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Initializes the listView, creates a dialog and displays it on the screen
+     * @return complete {@link CDMenu}
+     */
+    public CDMenu show() {
+        if (listView == null) {
+            listView = createDefaultListView();
+        }
+        if (listItemLayoutId == 0) {
+            listItemLayoutId = defaultListItemId;
+            listItemTextViewId = defaultListItemTextViewId;
+        }
+        dialog = createDialog(initializeListView(listView));
+        dialog.show();
+        return this;
+    }
+
+    private Dialog createDialog(ListView listView) {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(listView);
+        dialog.setCanceledOnTouchOutside(true);
+        return dialog;
+    }
+
+    private ListView createDefaultListView() {
+        ListView listView = new ListView(context);
+        listView.setBackgroundColor(Color.WHITE);
+        listView.setDivider(new ColorDrawable(Color.LTGRAY));
+        listView.setDividerHeight(1);
+        return listView;
+    }
+
+    private ListView initializeListView(ListView listView) {
+        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
+        listView.setCacheColorHint(0);
+        listView.setOnItemClickListener(this);
+        return listView;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        if(menu.getItem(position).hasSubMenu()) {
+            goToSubMenu(menu.getItem(position).getSubMenu());
+            return;
+        }
+
+        if (onItemClickListener != null){
+            onItemClickListener.onItemClick(adapterView, view, position, l);
+        }
+        dialog.dismiss();
+    }
+
+    private void goToSubMenu(Menu subMenu) {
+        menu = subMenu;
+        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
     }
 }
