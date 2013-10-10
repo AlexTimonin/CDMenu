@@ -17,7 +17,16 @@ How to use
 
 *> How to use small examples.*
 
-*> List of examples in repository*
+**Samples project contains following examples:**
+
+1. Shows a default Android context menu, populated with a menu resource xml
+2. Shows a CDMenu populated with a menu resource xml
+3. Shows a CDMenu populated with a Menu object
+4. Shows a CDMenu populated with a menu resource xml, containing several layers of submenus
+5. Shows a CDMenu with its ListView inflated from a custom layout resource xml file
+6. Shows a CDMenu with its ListView set by passing in the object
+7. Shows a CDMenu with its ListView items' layout inflated from a custom layout resource xml file
+8. Same as 7, but also handles a callback to manually update custom list items, used in case their layouts need more than just main TextViews to be updated
 
 License (MIT)
 =============
