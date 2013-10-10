@@ -15,9 +15,9 @@ Installation
 How to use
 ==========
 
-**Samples project contents**
+*> How to use small examples.*
 
-Upon launch, the Samples project shows a list of options:
+**Samples project contains following examples:**
 
 1. Shows a default Android context menu, populated with a menu resource xml
 2. Shows a CDMenu populated with a menu resource xml
