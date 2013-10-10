@@ -45,13 +45,18 @@ public class CDMenuListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         View view = convertView == null ? ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(listItemLayoutId, null) : convertView;
-        View emptyMockView = new View(context);
-        emptyMockView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0));
-        ((ViewGroup)view).addView(emptyMockView);
+        view = hackLayoutWidthBug((ViewGroup)view);
         ((TextView)view.findViewById(listItemTextViewId)).setText(menu.getItem(position).getTitle());
         if (styleListener != null) {
             view = styleListener.onStyleChangeRequested(view, position);
         }
         return view;
+    }
+
+    private View hackLayoutWidthBug(ViewGroup parent) {
+        View emptyMockView = new View(context);
+        emptyMockView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 0));
+        parent.addView(emptyMockView);
+        return parent;
     }
 }

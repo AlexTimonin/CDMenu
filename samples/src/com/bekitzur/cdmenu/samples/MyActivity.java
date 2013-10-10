@@ -14,6 +14,11 @@ import com.bekitzur.cdmenu.StyleListener;
 
 public class MyActivity extends ListActivity implements AdapterView.OnItemClickListener {
 
+    private final int SIMPLE_MENU = 0;
+    private final int MENU_CUSTOM_LISTVIEW = 1;
+    private final int MENU_CUSTOM_LIST_ITEM = 2;
+    private final int MENU_CUSTOM_LIST_ITEM_AND_STYLE_LISTENER = 3;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,58 +38,46 @@ public class MyActivity extends ListActivity implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        createSampleCDMenu(position).show();
+    }
+
+    private CDMenu createSampleCDMenu(int position) {
         switch(position) {
-            case 0:
-                showSimpleMenu();
-                break;
-            case 1:
-                showMenuWithCustomListView(R.layout.custom_listview);
-                break;
-            case 2:
-                showMenuWithCustomListItem(R.layout.custom_list_item, R.id.customListItemTextView);
-                break;
-            case 3:
-                showMenuWithCustomListItem(R.layout.custom_list_item, R.id.customListItemTextView, styleListener);
-                break;
+            case SIMPLE_MENU: return createSimpleMenu();
+            case MENU_CUSTOM_LISTVIEW: return createMenuWithCustomListView(R.layout.custom_listview);
+            case MENU_CUSTOM_LIST_ITEM: return createMenuWithCustomListItem(R.layout.custom_list_item, R.id.customListItemTextView);
+            case MENU_CUSTOM_LIST_ITEM_AND_STYLE_LISTENER: return createMenuWithCustomListItem(R.layout.custom_list_item, R.id.customListItemTextView, styleListener);
+            default: return createSimpleMenu();
         }
     }
 
-    private void showSimpleMenu() {
-        CDMenu.createDialogMenu(this)
-                .setData(R.menu.custom_menu)
-                .show();
+    private CDMenu createSimpleMenu() {
+        return CDMenu.createDialogMenu(this).setData(R.menu.custom_menu);
     }
 
-    private void showMenuWithCustomListView(int listViewId) {
-        CDMenu.createDialogMenu(this)
+    private CDMenu createMenuWithCustomListView(int listViewId) {
+        return CDMenu.createDialogMenu(this)
                 .setData(R.menu.custom_menu)
-                .setCustomListView(listViewId)
-                .show();
+                .setCustomListView(listViewId);
     }
 
-    private void showMenuWithCustomListItem(int layoutId, int textViewId) {
-        CDMenu.createDialogMenu(this)
+    private CDMenu createMenuWithCustomListItem(int layoutId, int textViewId) {
+        return CDMenu.createDialogMenu(this)
                 .setData(R.menu.custom_menu)
-                .setCustomListItem(layoutId, textViewId, null)
-                .show();
+                .setCustomListItem(layoutId, textViewId, null);
     }
 
-    private void showMenuWithCustomListItem(int layoutId, int textViewId, StyleListener styleListener) {
-        CDMenu.createDialogMenu(this)
+    private CDMenu createMenuWithCustomListItem(int layoutId, int textViewId, StyleListener styleListener) {
+        return CDMenu.createDialogMenu(this)
                 .setData(R.menu.custom_menu)
                 .setCustomListView(R.layout.custom_listview)
-                .setCustomListItem(layoutId, textViewId, styleListener)
-                .show();
+                .setCustomListItem(layoutId, textViewId, styleListener);
     }
 
     private StyleListener styleListener = new StyleListener() {
         @Override
         public View onStyleChangeRequested(View listItemView, int position) {
-            if (position%2 == 0) {
-                ((ImageView)listItemView.findViewById(R.id.customListItemImageView)).setImageResource(R.drawable.star);
-            } else {
-                ((ImageView)listItemView.findViewById(R.id.customListItemImageView)).setImageResource(R.drawable.star2);
-            }
+            ((ImageView)listItemView.findViewById(R.id.customListItemImageView)).setImageResource(position % 2 == 0 ? R.drawable.star : R.drawable.star2);
             return listItemView;
         }
     };

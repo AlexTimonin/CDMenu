@@ -31,6 +31,9 @@ import java.lang.reflect.Constructor;
  */
 public class CDMenu implements AdapterView.OnItemClickListener {
 
+    final int defaultListItemId = R.layout.default_list_item;
+    final int defaultListItemTextViewId = R.id.defaultListItemTextView;
+
     private Context context;
     private ListView listView;
     private StyleListener styleListener;
@@ -54,7 +57,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
     }
 
     /**
-     * Set android menu resource which defines menu structure
+     * Sets android menu resource which defines menu structure
      * @param menuResourceId Android menu resource id
      * @return CDMenu
      */
@@ -69,7 +72,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
     }
 
     /**
-     * Set instance of Menu class to define menu structure
+     * Sets instance of Menu class to define menu structure
      * @param menu Instance of Menu class to define menu structure
      * @return CDMenu
      */
@@ -79,7 +82,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
     }
 
     /**
-     * Set a custom {@link android.widget.ListView} instead of the default one.
+     * Sets a custom {@link android.widget.ListView} instead of the default one.
      * @param layoutId resource Id of a layout xml file to be used as a ListView for the menu. If you pass <b>null</b>, or if <b>layoutId</b> doesn't match a {@link android.widget.ListView} object, {@link IllegalArgumentException} will be thrown.
      * @return {@link CDMenu} with a custom listView
      */
@@ -95,7 +98,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
     }
 
     /**
-     * Set a custom {@link ListView} instead of the default one.
+     * Sets a custom {@link ListView} instead of the default one.
      * @param listView a {@link ListView} object to be used as a ListView for the menu. Passing <b>null</b> causes {@link IllegalArgumentException} to be thrown.
      * @return {@link CDMenu} with a custom listView
      */
@@ -108,7 +111,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
     }
 
     /**
-     * Set a custom list item instead of the default one.
+     * Sets a custom list item instead of the default one.
      * @param layoutId resource Id of a layout xml file to be used as a list item instead of the default one. If you pass <b>null</b>, or if layoutId doesn't match a ViewGroup object, {@link IllegalArgumentException} will be thrown.
      * @param textViewId id of the {@link android.widget.TextView} that will contain the menu item name. If you pass <b>null</b>, or textViewId doesn't match a {@link android.widget.TextView} that is contained in layoutId, {@link IllegalArgumentException} will be thrown.
      * @param styleListener a listener that handles the custom list item's inner views' manual updating. Pass <b>null</b> if you don't need anything other than items' text to be updated.
@@ -134,7 +137,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
     }
 
     /**
-     * Set a listener to respond to menu clicks.
+     * Sets a listener to respond to menu clicks.
      * @param onItemClickListener an object that implements {@link android.widget.AdapterView.OnItemClickListener} interface. If you pass <b>null</b>, {@link IllegalArgumentException} will be thrown.
      * @return {@link CDMenu} with an attached {@link android.widget.AdapterView.OnItemClickListener}
      */
@@ -157,29 +160,44 @@ public class CDMenu implements AdapterView.OnItemClickListener {
         return null;
     }
 
-    public void show() {
+    /**
+     * Initializes the listView, creates a dialog and displays it on the screen
+     * @return complete {@link CDMenu}
+     */
+    public CDMenu show() {
         if (listView == null) {
-            setDefaultListView();
+            listView = createDefaultListView();
         }
         if (listItemLayoutId == 0) {
-            listItemLayoutId = R.layout.default_list_item;
-            listItemTextViewId = R.id.defaultListItemTextView;
+            listItemLayoutId = defaultListItemId;
+            listItemTextViewId = defaultListItemTextViewId;
         }
-        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
-        listView.setCacheColorHint(0);
-        listView.setOnItemClickListener(this);
-        dialog = new Dialog(context);
+        dialog = createDialog(initializeListView(listView));
+        dialog.show();
+        return this;
+    }
+
+    private Dialog createDialog(ListView listView) {
+        Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(listView);
         dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        return dialog;
     }
 
-    private void setDefaultListView() {
-        listView = new ListView(context);
+    private ListView createDefaultListView() {
+        ListView listView = new ListView(context);
         listView.setBackgroundColor(Color.WHITE);
         listView.setDivider(new ColorDrawable(Color.LTGRAY));
         listView.setDividerHeight(1);
+        return listView;
+    }
+
+    private ListView initializeListView(ListView listView) {
+        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
+        listView.setCacheColorHint(0);
+        listView.setOnItemClickListener(this);
+        return listView;
     }
 
     @Override
