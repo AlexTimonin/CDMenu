@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="main_activity_list_items">
-        <item>Simple menu</item>
-        <item>Simple menu with custom ListView</item>
-        <item>Simple menu with custom list item</item>
-        <item>Simple menu with custom list item &amp; style listener</item>
+        <item>Default Android context menu</item>
+        <item>Simple CDMenu with data in xml</item>
+        <item>Simple CDMenu with data in Menu object</item>
+        <item>CDMenu with custom ListView from xml</item>
+        <item>CDMenu with custom ListView object</item>
+        <item>CDMenu with custom list item</item>
+        <item>CDMenu with custom list item &amp; style listener</item>
     </string-array>
 </resources>
