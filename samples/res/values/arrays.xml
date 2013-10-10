@@ -4,6 +4,7 @@
         <item>Default Android context menu</item>
         <item>Simple CDMenu with data in xml</item>
         <item>Simple CDMenu with data in Menu object</item>
+        <item>Simple CDMenu with submenus</item>
         <item>CDMenu with custom ListView from xml</item>
         <item>CDMenu with custom ListView object</item>
         <item>CDMenu with custom list item</item>

@@ -17,10 +17,11 @@ public class MyActivity extends ListActivity implements AdapterView.OnItemClickL
     private final int DEFAULT_ANDROID_CONTEXT_MENU = 0;
     private final int SIMPLE_CDMENU_XML = 1;
     private final int SIMPLE_CDMENU_OBJECT = 2;
-    private final int CDMENU_CUSTOM_LISTVIEW_XML = 3;
-    private final int CDMENU_CUSTOM_LISTVIEW_OBJECT = 4;
-    private final int CDMENU_CUSTOM_LIST_ITEM = 5;
-    private final int CDMENU_CUSTOM_LIST_ITEM_AND_STYLE_LISTENER = 6;
+    private final int SIMPLE_CDMENU_WITH_SUBMENUS = 3;
+    private final int CDMENU_CUSTOM_LISTVIEW_XML = 4;
+    private final int CDMENU_CUSTOM_LISTVIEW_OBJECT = 5;
+    private final int CDMENU_CUSTOM_LIST_ITEM = 6;
+    private final int CDMENU_CUSTOM_LIST_ITEM_AND_STYLE_LISTENER = 7;
 
     private Menu myMenu;
 
@@ -55,6 +56,7 @@ public class MyActivity extends ListActivity implements AdapterView.OnItemClickL
         switch(position) {
             case SIMPLE_CDMENU_XML: return createSimpleMenu(R.menu.custom_menu);
             case SIMPLE_CDMENU_OBJECT: return createSimpleMenu(myMenu);
+            case SIMPLE_CDMENU_WITH_SUBMENUS: return createSimpleMenu(R.menu.custom_menu_with_submenus);
             case CDMENU_CUSTOM_LISTVIEW_XML: return createMenuWithCustomListView(R.layout.custom_listview);
             case CDMENU_CUSTOM_LISTVIEW_OBJECT: return createMenuWithCustomListView(createCustomListView());
             case CDMENU_CUSTOM_LIST_ITEM: return createMenuWithCustomListItem(R.layout.custom_list_item, R.id.customListItemTextView);
