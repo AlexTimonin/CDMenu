@@ -1,21 +1,41 @@
 CDMenu
 ======
 
-Customizable Dialog Menu for Android.
+Customizable Dialog Menu for Android to replace default ContextMenu.
+
+You can use it like default ContextMenu with default customization or you can customize it using your ListView layout, ListViewItem layout, StyleDelegate and other features.
 
 *> TODO: Add logo/screenshots.*
 
-*Project will be developed using Document Driven Development. You can read the [documentation here](https://github.com/BeKitzur/CDMenu/wiki) before use this control.*
+*Project was developed using Document-Driven Development. You can read the [documentation here](https://github.com/BeKitzur/CDMenu/wiki) before use this control.*
 
 Installation
 ============
 
-*> Installation guides will be listed here.*
+Download `/library` folder and import it to your project as module.
 
 How to use
 ==========
 
-*> How to use small examples.*
+Customizable Dialog Menu is easy to use control.
+
+Here is quick example of usage:
+
+    CDMenu.createDialogMenu(context)
+        .setData(R.menu.main_menu)
+        .setOnItemClickListener(this)
+        .show();
+
+You can use your custom list view layout and list item:
+
+    CDMenu.createDialogMenu(context)
+        .setData(R.menu.main_menu)
+        .setOnItemClickListener(this)
+        .setCustomListView(ListView or R.layout.your_list_view)
+        .setCustomListItem(R.layout.your_item_layout, R.id.text_view_id, this)
+        .show();
+
+More examples in [Samples Project](https://github.com/BeKitzur/CDMenu/tree/master/samples)
 
 **Samples project contains following examples:**
 
