@@ -175,7 +175,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
         }
 
         if (onCDMenuItemClickListener != null) {
-            onCDMenuItemClickListener.onCDMenuItemClicked(setMenuInfo(menu.getItem(position), position));
+            onCDMenuItemClickListener.onCDMenuItemClicked(setMenuInfo(view, position, menu.getItem(position)));
         }
         dialog.dismiss();
     }
@@ -219,9 +219,9 @@ public class CDMenu implements AdapterView.OnItemClickListener {
         return null;
     }
 
-    private MenuItem setMenuInfo(MenuItem menuItem, int position) {
+    private MenuItem setMenuInfo(View targetView, int position, MenuItem menuItem) {
         try {
-            ContextMenu.ContextMenuInfo contextMenuInfo = new AdapterView.AdapterContextMenuInfo(null, position, menuItem.getItemId());;
+            ContextMenu.ContextMenuInfo contextMenuInfo = new AdapterView.AdapterContextMenuInfo(targetView, position, menuItem.getItemId());
             Class<?> menuItemClass = Class.forName("com.android.internal.view.menu.MenuItemImpl");
             Field menuInfo = menuItemClass.getDeclaredField("mMenuInfo");
             menuInfo.setAccessible(true);
