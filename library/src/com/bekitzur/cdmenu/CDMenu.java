@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 
 /**
  * Customizable Dialog Menu for Android <a href="https://github.com/BeKitzur/CDMenu">https://github.com/BeKitzur/CDMenu</a>
@@ -208,9 +209,22 @@ public class CDMenu implements AdapterView.OnItemClickListener {
         }
 
         if (onCDMenuItemClickListener != null) {
-            onCDMenuItemClickListener.onCDMenuItemClicked(menu.getItem(position));
+            onCDMenuItemClickListener.onCDMenuItemClicked(setMenuInfo(menu.getItem(position), position));
         }
         dialog.dismiss();
+    }
+
+    private MenuItem setMenuInfo(MenuItem menuItem, int position) {
+        try {
+            ContextMenu.ContextMenuInfo contextMenuInfo = new AdapterView.AdapterContextMenuInfo(menuItem.getActionView(), position, menuItem.getItemId());
+            Class<?> menuItemClass = Class.forName("com.android.internal.view.menu.MenuItemImpl");
+            Field menuInfo = menuItemClass.getDeclaredField("mMenuInfo");
+            menuInfo.setAccessible(true);
+            menuInfo.set(menuItem, contextMenuInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return menuItem;
     }
 
     private void goToSubMenu(Menu subMenu) {
