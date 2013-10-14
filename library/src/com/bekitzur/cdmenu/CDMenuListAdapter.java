@@ -1,6 +1,7 @@
 package com.bekitzur.cdmenu;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -46,7 +47,9 @@ public class CDMenuListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         View view = convertView == null ? ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(listItemLayoutId, null) : convertView;
         view = hackLayoutWidthBug((ViewGroup)view);
-        ((TextView)view.findViewById(listItemTextViewId)).setText(menu.getItem(position).getTitle());
+        TextView textView = (TextView)view.findViewById(listItemTextViewId);
+        textView.setText(menu.getItem(position).getTitle());
+        textView.setTextColor(menu.getItem(position).isEnabled() ? textView.getCurrentTextColor() : Color.LTGRAY);
         if (styleListener != null) {
             view = styleListener.onStyleChangeRequested(view, position);
         }

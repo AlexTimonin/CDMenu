@@ -38,7 +38,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
     private ListView listView;
     private StyleListener styleListener;
     private int listItemLayoutId, listItemTextViewId;
-    private AdapterView.OnItemClickListener onItemClickListener;
+    private OnCDMenuItemClickListener onCDMenuItemClickListener;
     private Menu menu;
     private Dialog dialog;
 
@@ -138,14 +138,14 @@ public class CDMenu implements AdapterView.OnItemClickListener {
 
     /**
      * Sets a listener to respond to menu clicks.
-     * @param onItemClickListener an object that implements {@link android.widget.AdapterView.OnItemClickListener} interface. If you pass <b>null</b>, {@link IllegalArgumentException} will be thrown.
+     * @param onCDMenuItemClickListener an object that implements {@link OnCDMenuItemClickListener} interface. If you pass <b>null</b>, {@link IllegalArgumentException} will be thrown.
      * @return {@link CDMenu} with an attached {@link android.widget.AdapterView.OnItemClickListener}
      */
-    public CDMenu setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
-        if (onItemClickListener == null) {
-            throw new IllegalArgumentException("onItemClickListener is null");
+    public CDMenu setOnItemClickListener(OnCDMenuItemClickListener onCDMenuItemClickListener) {
+        if (onCDMenuItemClickListener == null) {
+            throw new IllegalArgumentException("onCDMenuItemClickListener is null");
         }
-        this.onItemClickListener = onItemClickListener;
+        this.onCDMenuItemClickListener = onCDMenuItemClickListener;
         return this;
     }
 
@@ -202,13 +202,13 @@ public class CDMenu implements AdapterView.OnItemClickListener {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        if(menu.getItem(position).hasSubMenu()) {
+        if(menu.getItem(position).hasSubMenu() && menu.getItem(position).isEnabled()) {
             goToSubMenu(menu.getItem(position).getSubMenu());
             return;
         }
 
-        if (onItemClickListener != null){
-            onItemClickListener.onItemClick(adapterView, view, position, l);
+        if (onCDMenuItemClickListener != null) {
+            onCDMenuItemClickListener.onCDMenuItemClicked(menu.getItem(position));
         }
         dialog.dismiss();
     }
