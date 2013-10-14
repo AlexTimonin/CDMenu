@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 
 /**
  * Customizable Dialog Menu for Android <a href="https://github.com/BeKitzur/CDMenu">https://github.com/BeKitzur/CDMenu</a>
@@ -149,17 +150,6 @@ public class CDMenu implements AdapterView.OnItemClickListener {
         return this;
     }
 
-    private Menu newMenuInstance(Context context) {
-        try {
-            Class<?> menuBuilderClass = Class.forName("com.android.internal.view.menu.MenuBuilder");
-            Constructor<?> constructor = menuBuilderClass.getDeclaredConstructor(Context.class);
-            return (Menu)constructor.newInstance(context);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     /**
      * Initializes the listView, creates a dialog and displays it on the screen
      * @return complete {@link CDMenu}
@@ -175,6 +165,24 @@ public class CDMenu implements AdapterView.OnItemClickListener {
         dialog = createDialog(initializeListView(listView));
         dialog.show();
         return this;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        if(menu.getItem(position).hasSubMenu() && menu.getItem(position).isEnabled()) {
+            goToSubMenu(menu.getItem(position).getSubMenu());
+            return;
+        }
+
+        if (onCDMenuItemClickListener != null) {
+            onCDMenuItemClickListener.onCDMenuItemClicked(setMenuInfo(menu.getItem(position), position));
+        }
+        dialog.dismiss();
+    }
+
+    private void goToSubMenu(Menu subMenu) {
+        menu = subMenu;
+        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
     }
 
     private Dialog createDialog(ListView listView) {
@@ -200,21 +208,27 @@ public class CDMenu implements AdapterView.OnItemClickListener {
         return listView;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        if(menu.getItem(position).hasSubMenu() && menu.getItem(position).isEnabled()) {
-            goToSubMenu(menu.getItem(position).getSubMenu());
-            return;
+    private Menu newMenuInstance(Context context) {
+        try {
+            Class<?> menuBuilderClass = Class.forName("com.android.internal.view.menu.MenuBuilder");
+            Constructor<?> constructor = menuBuilderClass.getDeclaredConstructor(Context.class);
+            return (Menu)constructor.newInstance(context);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (onCDMenuItemClickListener != null) {
-            onCDMenuItemClickListener.onCDMenuItemClicked(menu.getItem(position));
-        }
-        dialog.dismiss();
+        return null;
     }
 
-    private void goToSubMenu(Menu subMenu) {
-        menu = subMenu;
-        listView.setAdapter(new CDMenuListAdapter(context, menu, listItemLayoutId, listItemTextViewId, styleListener));
+    private MenuItem setMenuInfo(MenuItem menuItem, int position) {
+        try {
+            ContextMenu.ContextMenuInfo contextMenuInfo = new AdapterView.AdapterContextMenuInfo(menuItem.getActionView(), position, menuItem.getItemId());
+            Class<?> menuItemClass = Class.forName("com.android.internal.view.menu.MenuItemImpl");
+            Field menuInfo = menuItemClass.getDeclaredField("mMenuInfo");
+            menuInfo.setAccessible(true);
+            menuInfo.set(menuItem, contextMenuInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return menuItem;
     }
 }
