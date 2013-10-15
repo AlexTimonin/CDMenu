@@ -221,7 +221,7 @@ public class CDMenu implements AdapterView.OnItemClickListener {
 
     private MenuItem setMenuInfo(MenuItem menuItem, int position) {
         try {
-            ContextMenu.ContextMenuInfo contextMenuInfo = new AdapterView.AdapterContextMenuInfo(menuItem.getActionView(), position, menuItem.getItemId());
+            ContextMenu.ContextMenuInfo contextMenuInfo = new AdapterView.AdapterContextMenuInfo(null, position, menuItem.getItemId());;
             Class<?> menuItemClass = Class.forName("com.android.internal.view.menu.MenuItemImpl");
             Field menuInfo = menuItemClass.getDeclaredField("mMenuInfo");
             menuInfo.setAccessible(true);
